@@ -17,7 +17,11 @@ class Analysis{
         if(err){ 
           reject(err); 
         }
-        resolve(data.Item.mapAttr);
+        if(data.Item){
+          resolve(data.Item.mapAttr);
+        }else{
+          resolve(data);
+        }
       });
     });
   }
@@ -42,9 +46,17 @@ class Analysis{
         resolve(data);
       });
     });
-
   }
 
+  async putHandler(handler){
+    var data = await this.getData("handlerCount");
+    if(!data[handler]){
+      data[handler] = 1;
+    }else{
+      data[handler] += 1;
+    }
+    await this.updateData("handlerCount", data);
+  };
 }
 exports.Analysis = Analysis;
 
